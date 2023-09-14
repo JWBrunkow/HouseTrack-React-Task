@@ -1,38 +1,187 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  padding: 20px;
+}
+
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  max-width: 600px;
+  background-color: #fff;
+  padding: 20px;
+  margin: 20px auto;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  height: 100vh;
+  min-height: 100vh;
+  /* At least full screen height, but expandable beyond this */
+  height: auto;
 }
 
-.App-link {
-  color: #61dafb;
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.task-input,
+.task-list {
+  width: 100%;
+  margin: 10px 0;
+}
+
+input[type="text"],
+textarea,
+input[type="time"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+textarea {
+  height: 80px;
+  resize: vertical;
+}
+
+button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 10px 0;
+  border: 1px solid #e0e0e0;
+  /* Enclose each task in its own box */
+  margin: 10px 0;
+  /* Add some space between each task */
+  border-radius: 5px;
+  /* Add rounded corners to each task box */
+  padding: 15px;
+}
+
+strong {
+  font-size: 18px;
+}
+
+p {
+  margin: 5px 0;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  margin-left: 10px;
+  /* Space between the label and select box */
+}
+
+/* ... previous styles ... */
+
+.recurring-container {
+  display: flex;
+  justify-content: space-between;
+  /* Pushes children to the edges */
+  align-items: center;
+  /* Vertical centering */
+
+}
+
+.checkbox-label,
+.recurrence-dropdown {
+  display: flex;
+  align-items: center;
+}
+
+.logged-tasks {
+  margin-top: 20px;
+  background-color: #e6e6e6;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.logged-tasks pre {
+  white-space: pre-wrap;
+  /* Allows text to wrap in the pre element */
+  word-wrap: break-word;
+  /* Breaks long words for better readability */
+}
+
+.task-list .task-buttons {
+  display: flex;
+}
+
+.task-list .complete-button,
+.task-list .delete-button {
+  width: 30px;
+  height: 30px;
+  background-color: transparent;
+  border: none;
+  font-size: 1.2em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 5px;
+  /* Spacing between buttons */
+}
+
+.task-list .complete-button {
+  color: #4CAF50;
+  /* Green color for completion */
+}
+
+.task-list .complete-button:hover {
+  color: #388E3C;
+  /* Darker green on hover */
+}
+
+.task-list .delete-button {
+  color: red;
+}
+
+.task-list .delete-button:hover {
+  color: darkred;
+}
+
+.task-list .task-details {
+  flex: 1;
+  /* Take up remaining space after considering button */
+  padding-right: 10px;
+  /* Add some spacing between the details and the button */
+}
+
+.icon-right {
+  float: right;
+  cursor: pointer;
+  transition: 0.3s;
+  /* Smooth transition */
 }
