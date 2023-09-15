@@ -17,7 +17,6 @@ body {
   justify-content: center;
   height: 100vh;
   min-height: 100vh;
-  /* At least full screen height, but expandable beyond this */
   height: auto;
 }
 
@@ -77,11 +76,8 @@ li {
   border-bottom: 1px solid #e0e0e0;
   padding: 10px 0;
   border: 1px solid #e0e0e0;
-  /* Enclose each task in its own box */
   margin: 10px 0;
-  /* Add some space between each task */
   border-radius: 5px;
-  /* Add rounded corners to each task box */
   padding: 15px;
 }
 
@@ -101,17 +97,12 @@ select {
   border-radius: 4px;
   font-size: 16px;
   margin-left: 10px;
-  /* Space between the label and select box */
 }
-
-/* ... previous styles ... */
 
 .recurring-container {
   display: flex;
   justify-content: space-between;
-  /* Pushes children to the edges */
   align-items: center;
-  /* Vertical centering */
 
 }
 
@@ -130,9 +121,7 @@ select {
 
 .logged-tasks pre {
   white-space: pre-wrap;
-  /* Allows text to wrap in the pre element */
   word-wrap: break-word;
-  /* Breaks long words for better readability */
 }
 
 .task-list .task-buttons {
@@ -151,17 +140,14 @@ select {
   align-items: center;
   justify-content: center;
   margin-left: 5px;
-  /* Spacing between buttons */
 }
 
 .task-list .complete-button {
   color: #4CAF50;
-  /* Green color for completion */
 }
 
 .task-list .complete-button:hover {
   color: #388E3C;
-  /* Darker green on hover */
 }
 
 .task-list .delete-button {
@@ -174,9 +160,7 @@ select {
 
 .task-list .task-details {
   flex: 1;
-  /* Take up remaining space after considering button */
   padding-right: 10px;
-  /* Add some spacing between the details and the button */
 }
 
 .icon-right {
@@ -184,4 +168,32 @@ select {
   cursor: pointer;
   transition: 0.3s;
   /* Smooth transition */
+}
+
+.close-icon {
+  float: right;
+  cursor: pointer;
+  margin: 10px;
+}
+
+.task-input div {
+  transition: opacity 300ms ease-in-out;
+}
+
+.fade-enter {
+  opacity: 0.01;
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 300ms ease-in-out;
+}
+
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in-out;
 }

@@ -17,7 +17,8 @@ export const handleAddTask = (task, loadIncompleteTasks) => {
         dueTime: task.dueDateTime,
         completedTime: task.completedTime,
         userId: 1,
-        taskId: null
+        taskId: null,
+        recurrence: task.recurrence
     };
 
     postTask(payload)

@@ -23,7 +23,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>To-Do List</h1>
+      <h1>HouseTrack</h1>
       <TaskInput onAdd={(task) => handleAddTask(task, () => loadIncompleteTasks(setTasks))} />
 
       <h2>Active Tasks
