@@ -1,14 +1,47 @@
-import { getIncompleteTasks, postTask, updateTask, deleteTask } from './api';
+import {
+    getTasks, getIncompleteTasks, getCompleteTasks, getRecurringTasks, postTask, updateTask, deleteTask
+} from './api';
+
+export const loadTasks = (setTasks) => {
+    getTasks()
+        .then(response => {
+            setTasks(response.data);
+        })
+        .catch(error => {
+            console.error('Error fetching all tasks:', error);
+        });
+}
 
 export const loadIncompleteTasks = (setTasks) => {
     getIncompleteTasks()
         .then(response => {
-            setTasks(response.data.map(task => JSON.stringify(task)));
+            setTasks(response.data);
         })
         .catch(error => {
-            console.error('Error fetching tasks:', error);
+            console.error('Error fetching incomplete tasks:', error);
         });
 }
+
+export const loadCompletedTasks = (setCompletedTasks) => {
+    getCompleteTasks()
+        .then(response => {
+            setCompletedTasks(response.data);
+        })
+        .catch(error => {
+            console.error('Error fetching completed tasks:', error);
+        });
+}
+
+export const loadRecurringTasks = (setRecurringTasks) => {
+    getRecurringTasks()
+        .then(response => {
+            setRecurringTasks(response.data);
+        })
+        .catch(error => {
+            console.error('Error fetching recurring tasks:', error);
+        });
+}
+
 
 export const handleAddTask = (task, loadIncompleteTasks) => {
     const payload = {
@@ -31,19 +64,21 @@ export const handleAddTask = (task, loadIncompleteTasks) => {
         });
 };
 
-export const handleUpdateTask = (taskId, updatedTask) => {
+export const handleUpdateTask = (taskId, updatedTask, callback) => {
     updateTask(taskId, updatedTask)
         .then(response => {
             console.log('Task updated successfully:', response.data);
+            if (callback) { callback(); }
         })
         .catch(error => {
             console.error('Error updating task:', error);
         });
 };
 
+
 export const handleDeleteTask = (indexToDelete, tasks, completedTasks, setTasks, setCompletedTasks, isCompletedTask = false) => {
     const taskList = isCompletedTask ? completedTasks : tasks;
-    const taskIdToDelete = JSON.parse(taskList[indexToDelete]).taskId;
+    const taskIdToDelete = taskList[indexToDelete].taskId;
 
     deleteTask(taskIdToDelete)
         .then(() => {
@@ -60,9 +95,29 @@ export const handleDeleteTask = (indexToDelete, tasks, completedTasks, setTasks,
 };
 
 export const handleTaskCompletion = (indexToComplete, tasks, setTasks, handleUpdateTask, setCompletedTasks) => {
-    let taskToComplete = JSON.parse(tasks[indexToComplete]);
+    let taskToComplete = tasks[indexToComplete];
     taskToComplete.completedTime = new Date().toISOString();
     handleUpdateTask(taskToComplete.taskId, taskToComplete);
     setTasks(prevTasks => prevTasks.filter((_, idx) => idx !== indexToComplete));
     setCompletedTasks(prevCompleted => [...prevCompleted, JSON.stringify(taskToComplete)]);
 };
+
+export const handleTaskSubmit = (taskData, onAdd) => {
+    let recurrenceString = null;
+    if (taskData.isRecurring && taskData.recurringDays) {
+        recurrenceString = `${taskData.recurringDays},${taskData.recurringDays}`;
+    }
+
+    const taskPayload = {
+        name: taskData.taskName,
+        description: taskData.taskDescription,
+        dueDateTime: taskData.dueDateTime,
+        completedTime: null,
+        userId: 1,
+        recurrence: recurrenceString
+    };
+
+    console.log('Submitting:', taskPayload);
+    onAdd(taskPayload);
+};
+

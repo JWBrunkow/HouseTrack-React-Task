@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X } from 'react-bootstrap-icons';
 import { CSSTransition } from 'react-transition-group';
+import { handleTaskSubmit } from './handlers';
 
 function TaskInput({ onAdd }) {
     const [showInput, setShowInput] = useState(false);
@@ -11,17 +12,15 @@ function TaskInput({ onAdd }) {
     const [recurringDays, setRecurringDays] = useState(null);
 
     const handleSubmit = () => {
-        const taskPayload = {
-            name: taskName,
-            description: taskDescription,
-            dueDateTime: dueDateTime,
-            completedTime: null,
-            userId: 1,
-            recurrence: isRecurring ? recurringDays : null
+        const taskData = {
+            taskName,
+            taskDescription,
+            dueDateTime,
+            isRecurring,
+            recurringDays
         };
 
-        console.log('Submitting:', taskPayload);
-        onAdd(taskPayload);
+        handleTaskSubmit(taskData, onAdd);
         setTaskName('');
         setTaskDescription('');
         setDueDateTime('');
@@ -80,7 +79,7 @@ function TaskInput({ onAdd }) {
                                         min="1"
                                         max="999"
                                         style={{ width: '30px' }}
-                                        value={recurringDays}
+                                        value={recurringDays === null ? '' : recurringDays}
                                         onChange={e => setRecurringDays(e.target.value)}
                                     />
                                     &nbsp; days after this due date.
