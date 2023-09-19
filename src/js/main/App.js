@@ -1,8 +1,8 @@
-import '../css/App.css';
+import '../../css/App.css';
 import TaskInput from './TaskInput';
 import TaskList from './TaskList';
 import React, { useState, useEffect } from 'react';
-import { handleAddTask, handleDeleteTask, handleUpdateTask, loadCompletedTasks, loadIncompleteTasks, loadRecurringTasks } from './handlers';
+import { handleAddTask, handleDeleteTask, handleUpdateTask, loadCompletedTasks, loadIncompleteTasks, loadRecurringTasks } from './Handlers';
 import { ChevronDoubleRight, ChevronDoubleDown } from 'react-bootstrap-icons';
 
 function App() {

@@ -1,6 +1,6 @@
 import {
     getTasks, getIncompleteTasks, getCompleteTasks, getRecurringTasks, postTask, updateTask, deleteTask
-} from './api';
+} from './Api';
 
 export const loadTasks = (setTasks) => {
     getTasks()

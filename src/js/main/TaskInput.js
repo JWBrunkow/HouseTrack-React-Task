@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { X } from 'react-bootstrap-icons';
 import { CSSTransition } from 'react-transition-group';
-import { handleTaskSubmit } from './handlers';
+import { handleTaskSubmit } from './Handlers';
 
 function TaskInput({ onAdd }) {
     const [showInput, setShowInput] = useState(false);
