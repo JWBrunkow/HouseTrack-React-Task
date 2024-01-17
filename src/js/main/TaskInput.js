@@ -3,7 +3,7 @@ import { X } from 'react-bootstrap-icons';
 import { CSSTransition } from 'react-transition-group';
 import { handleTaskSubmit } from './Handlers';
 
-function TaskInput({ onAdd }) {
+function TaskInput({ onAdd, userId }) {
     const [showInput, setShowInput] = useState(false);
     const [taskName, setTaskName] = useState('');
     const [taskDescription, setTaskDescription] = useState('');
@@ -19,8 +19,7 @@ function TaskInput({ onAdd }) {
             isRecurring,
             recurringDays
         };
-
-        handleTaskSubmit(taskData, onAdd);
+        onAdd(taskData, userId);
         setTaskName('');
         setTaskDescription('');
         setDueDateTime('');

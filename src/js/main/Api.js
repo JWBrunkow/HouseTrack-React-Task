@@ -66,3 +66,13 @@ export const deleteTask = async (taskId) => {
         throw error;
     }
 };
+export const fetchUserDetails = async (userId) => {
+    try {
+        const response = await axios.get(`http://localhost:8081/getUserDetails/${userId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching user details:', error);
+        throw error;
+    }
+};
+

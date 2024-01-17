@@ -4,6 +4,7 @@ import TaskList from './TaskList';
 import React, { useState, useEffect } from 'react';
 import { handleAddTask, handleDeleteTask, handleUpdateTask, loadCompletedTasks, loadIncompleteTasks, loadRecurringTasks } from './Handlers';
 import { ChevronDoubleRight, ChevronDoubleDown } from 'react-bootstrap-icons';
+import { fetchUserInfo } from './Handlers';
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -12,8 +13,40 @@ function App() {
   const [showActiveTasks, setShowActiveTasks] = useState(true);
   const [showCompletedTasks, setShowCompletedTasks] = useState(true);
   const [showRecurringTasks, setShowRecurringTasks] = useState(true);
+  const [userId, setUserId] = useState(null);
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const paramUserId = urlParams.get('id');
+
+    if (paramUserId) {
+      setIsLoading(true);
+      fetchUserInfo(paramUserId)
+        .then(data => {
+          if (data) {
+            setUserId(data.userId);
+            setUsername(data.username || 'Unknown user');
+            setEmail(data.email);
+            loadIncompleteTasks(setTasks);
+            loadCompletedTasks(setCompletedTasks);
+            loadRecurringTasks(setRecurringTasks);
+          } else {
+            console.error('No user data returned from the API');
+          }
+          setIsLoading(false);
+        })
+        .catch(error => {
+          console.error('Error fetching user details:', error);
+          setIsLoading(false);
+        });
+    }
+  }, []);
+
+  useEffect(() => {
+    setUserId(username ? username.hashCode() : null);
     loadIncompleteTasks(setTasks);
     loadCompletedTasks(setCompletedTasks);
     loadRecurringTasks(setRecurringTasks);
@@ -44,14 +77,21 @@ function App() {
     }
   }, [recurringTasks]);
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="App">
       <h1>HouseTrack</h1>
-      <TaskInput onAdd={(task) => handleAddTask(task, () => {
+      {username && <h2>Welcome, {username}!</h2>}
+      <TaskInput onAdd={(task) => handleAddTask(task, userId).then(() => {
         loadIncompleteTasks(setTasks);
         loadCompletedTasks(setCompletedTasks);
         loadRecurringTasks(setRecurringTasks);
-      })} />
+      })}
+        userId={userId}
+      />
 
       <h2>Active Tasks
         <span
@@ -64,9 +104,10 @@ function App() {
       {showActiveTasks && (
         <TaskList
           tasks={tasks}
+          username={username}
           onDelete={(idx) => handleDeleteTask(idx, tasks, completedTasks, setTasks, setCompletedTasks)}
           onComplete={(idx) => {
-            const updatedTask = { ...tasks[idx], completedTime: new Date().toISOString() };
+            const updatedTask = { ...tasks[idx], completedTime: new Date().toISOString(), completedBy: username };
             handleUpdateTask(tasks[idx].taskId, updatedTask, () => {
               loadIncompleteTasks(setTasks);
               loadCompletedTasks(setCompletedTasks);
@@ -89,6 +130,7 @@ function App() {
       {showCompletedTasks && (
         <TaskList
           tasks={completedTasks}
+          username={username}
           onDelete={(idx) => handleDeleteTask(idx, tasks, completedTasks, setTasks, setCompletedTasks, true)}
           isActive={false}
         />

@@ -1,6 +1,6 @@
 import React from 'react';
 
-function TaskList({ tasks, onDelete, onComplete, isActive }) {
+function TaskList({ tasks, onDelete, onComplete, isActive, username }) {
     return (
         <ul className="task-list">
             {tasks.map((task, idx) => (
@@ -11,15 +11,13 @@ function TaskList({ tasks, onDelete, onComplete, isActive }) {
                         {isActive && (
                             <p>Due at: {new Date(task.dueTime).toLocaleString()}</p>
                         )}
-                        {task.recurrence && (
-                            <>
-                                <p>{formatNextDue(task.recurrence, task.dueTime)}</p>
-                            </>
+                        {!isActive && task.completedTime && (
+                            <p>Completed at: {new Date(task.completedTime).toLocaleString()} by {task.completedBy || username}</p>
                         )}
-                        <p>User ID: {task.userId}</p>
+                        <p>Assigned by: {username}</p>
                     </div>
                     <div className="task-buttons">
-                        {onComplete && (
+                        {isActive && onComplete && (
                             <button className="complete-button" onClick={() => onComplete(idx)}>✔️</button>
                         )}
                         <button className="delete-button" onClick={() => onDelete(idx)}>&#x1F5D1;</button>

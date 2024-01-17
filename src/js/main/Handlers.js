@@ -1,5 +1,5 @@
 import {
-    getTasks, getIncompleteTasks, getCompleteTasks, getRecurringTasks, postTask, updateTask, deleteTask
+    getTasks, getIncompleteTasks, getCompleteTasks, getRecurringTasks, postTask, updateTask, deleteTask, fetchUserDetails
 } from './Api';
 
 export const loadTasks = (setTasks) => {
@@ -43,18 +43,18 @@ export const loadRecurringTasks = (setRecurringTasks) => {
 }
 
 
-export const handleAddTask = (task, loadIncompleteTasks) => {
+export const handleAddTask = (task, userId) => {
     const payload = {
         taskName: task.name,
         taskDesc: task.description,
         dueTime: task.dueDateTime,
         completedTime: task.completedTime,
-        userId: 1,
+        userId: userId,
         taskId: null,
         recurrence: task.recurrence
     };
 
-    postTask(payload)
+    return postTask(payload)
         .then(response => {
             console.log('Task added successfully:', response.data);
             loadIncompleteTasks();
@@ -102,7 +102,7 @@ export const handleTaskCompletion = (indexToComplete, tasks, setTasks, handleUpd
     setCompletedTasks(prevCompleted => [...prevCompleted, JSON.stringify(taskToComplete)]);
 };
 
-export const handleTaskSubmit = (taskData, onAdd) => {
+export const handleTaskSubmit = (taskData, userId, onAdd) => {
     let recurrenceString = null;
     if (taskData.isRecurring && taskData.recurringDays) {
         recurrenceString = `${taskData.recurringDays},${taskData.recurringDays}`;
@@ -113,11 +113,19 @@ export const handleTaskSubmit = (taskData, onAdd) => {
         description: taskData.taskDescription,
         dueDateTime: taskData.dueDateTime,
         completedTime: null,
-        userId: 1,
+        userId: userId,
         recurrence: recurrenceString
     };
 
     console.log('Submitting:', taskPayload);
     onAdd(taskPayload);
 };
-
+export const fetchUserInfo = async (userId) => {
+    try {
+        const data = await fetchUserDetails(userId);
+        return data;
+    } catch (error) {
+        console.error('Error in fetching user information:', error);
+        return null;
+    }
+};
